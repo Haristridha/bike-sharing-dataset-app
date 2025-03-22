@@ -8,20 +8,20 @@ day_df = pd.read_csv("day_clean.csv")
 hour_df = pd.read_csv("hour_clean.csv")
 
 # Mapping season values
-season_mapping = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
+season_mapping = {1: "Musim Semi", 2: "Musim Panas", 3: "Musim Gugur", 4: "Musim Dingin"}
 
 day_df["season_name"] = day_df["season"].map(season_mapping)
 hour_df["season_name"] = hour_df["season"].map(season_mapping)
 
 # Tambahkan pilihan "All Season"
-season_options = ["All Season"] + list(season_mapping.values())
+season_options = ["Seluruh Musim"] + list(season_mapping.values())
 
 # Sidebar
 st.sidebar.header("Filter Data")
 selected_season = st.sidebar.selectbox("Pilih Musim:", options=season_options)
 
 # Filter data berdasarkan pilihan musim
-if selected_season == "All Season":
+if selected_season == "Seluruh Musim":
     filtered_day_df = day_df
     filtered_hour_df = hour_df
 else:
@@ -48,7 +48,7 @@ plt.xticks(rotation=45)
 st.pyplot(fig)
 
 # 2️⃣ Pengaruh Cuaca & Musim
-st.subheader("☀️ Pengaruh Cuaca terhadap Penyewaan Sepeda")
+st.subheader(f"☀️ Pengaruh Kondisi Cuaca terhadap Penyewaan Sepeda selama {selected_season}")
 fig, ax = plt.subplots(figsize=(8, 4))
 sns.barplot(data=filtered_day_df, x='weathersit', y='cnt', palette='coolwarm')
 ax.set_xlabel("Kondisi Cuaca (1=Cerah, 2=Berawan, 3=Hujan)")
