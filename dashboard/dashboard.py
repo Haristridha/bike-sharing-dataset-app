@@ -58,13 +58,32 @@ st.pyplot(fig)
 # 3️⃣ Waktu Puncak Peminjaman Sepeda
 st.subheader("⏰ Waktu Puncak Peminjaman Sepeda")
 fig, ax = plt.subplots(figsize=(8, 4))
-sns.lineplot(data=filtered_hour_df, x='hr', y='cnt', marker="o", ax=ax)
+sns.barplot(data=filtered_hour_df, x='hr', y='cnt', ax=ax, errorbar=None)
 ax.set_xlabel("Jam (0-23)")
 ax.set_ylabel("Jumlah Penyewaan Sepeda")
-ax.set_xticks(range(0,24))
+ax.set_xticks(range(0, 24))  # Menampilkan semua label jam
+ax.grid(False)  # Hanya grid horizontal agar lebih rapi
+
+st.pyplot(fig)
+
+# 4️⃣ Eksplorasi Penyewaan Sepeda Berdasarkan Jam
+st.sidebar.header("Eksplorasi Data")
+hour_range = st.sidebar.slider("Pilih Rentang Jam Penyewaan:", 0, 23, (0, 23))
+
+# Filter data berdasarkan jam yang dipilih
+filtered_hour_range = filtered_hour_df[(filtered_hour_df["hr"] >= hour_range[0]) & (filtered_hour_df["hr"] <= hour_range[1])]
+
+# Visualisasi interaktif
+st.subheader("🔍 Eksplorasi Penyewaan Sepeda Berdasarkan Rentang Jam")
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.lineplot(data=filtered_hour_range, x="hr", y="cnt", marker="o", ax=ax)
+ax.set_xlabel("Jam (0-23)")
+ax.set_ylabel("Jumlah Penyewaan Sepeda")
+ax.set_xticks(range(hour_range[0], hour_range[1] + 1))
 ax.grid(True)
 st.pyplot(fig)
 
 # Footer
 st.markdown("---")
 st.write("🚲 **Dashboard dibuat dengan Streamlit** | Data dari sistem penyewaan sepeda")
+ 
